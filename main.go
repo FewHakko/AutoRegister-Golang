@@ -21,6 +21,15 @@ func randSeq(n int) string {
     return string(b)
 }
 
+
+func main() {
+	//thread
+	for i := 0; i < 100; i++ {
+		go website()
+	}
+	fmt.Scanln()
+}
+
 type Block struct {
 	Try     func()
 	Catch   func(Exception)
@@ -47,15 +56,6 @@ func (tcf Block) Do() {
 	tcf.Try()
 }
 
-
-func main() {
-	//thread
-	for i := 0; i < 100; i++ {
-		go website()
-	}
-	fmt.Scanln()
-}
-
 func website() string {
 	Block{
 		Try: func() {
@@ -77,6 +77,9 @@ func website() string {
 				req.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value") // This makes it work
 				
 				resp, err := client.Do(req)
+				if err != nil {
+					log.Println(err.Error())
+				}
 				defer resp.Body.Close()
 				if err != nil {
 					log.Fatal(err)
@@ -87,8 +90,8 @@ func website() string {
 			}
 		},
 		Catch: func(e Exception) {
-		go website()
-		fmt.Scanln()
+				go website()
+				fmt.Scanln()
 		},
 	}.Do()
 	return "few"
