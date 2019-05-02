@@ -21,15 +21,6 @@ func randSeq(n int) string {
     return string(b)
 }
 
-
-func main() {
-	//thread
-	for i := 0; i < 100; i++ {
-		go website()
-	}
-	fmt.Scanln()
-}
-
 type Block struct {
 	Try     func()
 	Catch   func(Exception)
@@ -54,6 +45,15 @@ func (tcf Block) Do() {
 		}()
 	}
 	tcf.Try()
+}
+
+
+func main() {
+	//thread
+	for i := 0; i < 100; i++ {
+		go website()
+	}
+	fmt.Scanln()
 }
 
 func website() string {
